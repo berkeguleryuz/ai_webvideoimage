@@ -17,6 +17,7 @@ const UploadImage = (props: Props) => {
       if (acceptFiles.length) {
         const formData = new FormData();
         formData.append("image", acceptFiles[0]);
+        const objectUrl = URL.createObjectURL(acceptFiles[0]);
       }
     },
   });
