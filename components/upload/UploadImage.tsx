@@ -1,11 +1,14 @@
 "use client";
+import { uploadImage } from "@/server/upload-image";
 import React from "react";
 import { useDropzone } from "react-dropzone";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "../ui/input";
 
 type Props = {};
 
 const UploadImage = (props: Props) => {
-  const {} = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     maxFiles: 1,
     accept: {
       "image/png": [".png"],
@@ -18,13 +21,27 @@ const UploadImage = (props: Props) => {
         const formData = new FormData();
         formData.append("image", acceptFiles[0]);
         const objectUrl = URL.createObjectURL(acceptFiles[0]);
+
+        const res = await uploadImage({ image: formData });
+        console.log(res);
       }
     },
   });
   return (
-    <div>
-      <h1>UploadImage</h1>
-    </div>
+    <Card {...getRootProps()}>
+      <CardContent>
+        <Input type="text" {...getInputProps()} />
+        <div className="">
+          <h1>animation</h1>
+          <p>
+            {isDragActive
+              ? "Drop your image here"
+              : "Start by uploading an image"}
+          </p>
+          <p>Supported formats: png, jpg, jpeg, webp</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

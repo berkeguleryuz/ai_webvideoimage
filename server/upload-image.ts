@@ -21,4 +21,33 @@ export const uploadImage = actionClient
 
     if (!formImage) return { error: "No image was provided" };
     if (!image) return { error: "No image was provided" };
+
+    const file = formImage as File;
+
+    type UploadResult =
+      | { success: UploadApiResponse; error?: never }
+      | { error: string; success?: never };
+
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      return new Promise<UploadResult>((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          {
+            upload_preset: process.env.CLOUDINARY_NAME,
+          },
+          (error, result) => {
+            if (error || !result) {
+              reject({ error: "Upload failed" });
+            } else {
+              resolve({ success: result });
+            }
+          },
+        );
+        uploadStream.end(buffer);
+      });
+    } catch (error) {
+      return { error: error };
+    }
   });

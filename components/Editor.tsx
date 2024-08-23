@@ -1,12 +1,16 @@
-"use client"
-import React from 'react'
+"use client";
+import React from "react";
+import UploadImage from "@/components/upload/UploadImage";
 
-type Props = {}
+type Props = {};
 
 const Editor = (props: Props) => {
   return (
-    <div>Editor</div>
-  )
-}
+    <div>
+      <h1>editor</h1>
+      <UploadImage />
+    </div>
+  );
+};
 
-export default Editor
+export default Editor;
